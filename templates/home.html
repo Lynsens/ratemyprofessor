@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
+    <meta http-equiv="refresh" content ="60">
+    <style>
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+    </style>
+    <title>Rate My Professors</title>
+
+    <link href="{{url_for('static', filename= 'bootstrap.min.css')}}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for ('static', filename= 'theme.css')}}" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Rate My Professors AT CWRU</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Home</a></li>
+<!--             <li><a href="player">Search For Player</a></li>
+            <li><a href="/club">Search For Club</a></li> -->
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container theme-showcase col-sm-6 col-sm-offset-3" role="main">
+
+          </form>
+
+          <div class="page-header"></div>
+
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">EECS 397 Group Project3</h3>
+            </div>
+            <div class="panel-body">
+              <body text="green">
+                <h1>Application Background </h1>
+                <p>This site tracks ratings over time received by various EECS professors at case on the site ratemyprofessors.com.  Each rating can be viewed independantly, or comparitively to other ratings.  An option for the overall EECS department is also included. This html page refreshes every 60 seconds. </p>
+    
+                </body>
+                <body text="green">
+                <h3>Quality</h3>
+                            <div style="width:100%;">
+    <canvas id="canvas"></canvas>
+</div>
+<script>
+    var timeFormat = 'DD/MM/YYYY';
+
+    var config = {
+        type:    'line',
+        data:    {
+            datasets: [
+                {
+                    label: "Prof. Loui",
+                    data: [{% for i in range(louiTime| length) %} 
+                    {x:"{{louiTime[i]}}", y:{{louiScore[i]}}},
+                      {% endfor %}],
+                    fill: false,
+                    hidden: true,
+                    borderColor: 'red'
+
+                },
+                 {
+                    label: "Prof. Xiao",
+                    data: [{% for i in range(xiaoTime| length) %} 
+                    {x:"{{xiaoTime[i]}}", y:{{xiaoScore[i]}}},
+                      {% endfor %}],
+                    fill: false,
+                    hidden: true,
+                    borderColor: 'black'
+                },
+                {
+                    label: "Prof. Conn",
+                    data: [{% for i in range(connTime| length) %} 
+                    {x:"{{connTime[i]}}", y:{{connScore[i]}}},
+                      {% endfor %}],
+                    fill: false,
+                    hidden: true,
+                    borderColor: 'pink'
+                },
+                {
+                    label: "Prof. Koyuturk",
+                    data: [{% for i in range(koyuTime| length) %} 
+                    {x:"{{koyuTime[i]}}", y:{{koyuScore[i]}}},
+                      {% endfor %}],
+                    fill: false,
+                    hidden: true,
+                    borderColor: 'yellow'
+                },
+                {
+                    label: "Prof. Wang",
+                    data: [{% for i in range(wangTime| length) %} 
+                    {x:"{{wangTime[i]}}", y:{{wangScore[i]}}},
+                      {% endfor %}],
+                    fill: false,
+                    hidden: true,
+                    borderColor: 'blue'
+                },                {
+                    label: "CWRU EECS Department Average",
+                    data: [{% for i in range(totalTime| length) %} 
+                    {x:"{{totalTime[i]}}", y:{{totalScore[i]}}},
+                      {% endfor %}],
+                    fill: false,
+                    
+                    borderColor: 'pruple'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            title:      {
+                display: true,
+                text:    "CWRU EECS Department Rate My Professor Scores"
+            },
+            scales:     {
+                xAxes: [{
+                    type:       "time",
+                    time:       {
+                        format: timeFormat,
+                        tooltipFormat: 'll'
+                    },
+                    scaleLabel: {
+                        display:     true,
+                        labelString: 'Date'
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display:     true,
+                        labelString: 'value'
+                    }
+                }]
+            }
+        }
+    };
+
+    window.onload = function () {
+        var ctx       = document.getElementById("canvas").getContext("2d");
+        window.myLine = new Chart(ctx, config);
+                var ctx2       = document.getElementById("canvas2").getContext("2d");
+        window.myLine = new Chart(ctx2, config2);
+    };
+
+</script>
+<h3>Difficulty</h3>
+                            <div style="width:100%;">
+    <canvas id="canvas2"></canvas>
+</div>
+<script>
+    var timeFormat = 'DD/MM/YYYY';
+
+    var config2 = {
+        type:    'line',
+        data:    {
+            datasets: [
+                {
+                    label: "Prof. Loui",
+                    data: [{% for i in range(louiTime| length) %} 
+                    {x:"{{louiTime[i]}}", y:{{louiDiff[i]}}},
+                      {% endfor %}],
+                    fill: false,
+                    hidden: true,
+                    borderColor: 'red'
+
+                },
+                 {
+                    label: "Prof. Xiao",
+                    data: [{% for i in range(xiaoTime| length) %} 
+                    {x:"{{xiaoTime[i]}}", y:{{xiaoDiff[i]}}},
+                      {% endfor %}],
+                    fill: false,
+                    hidden: true,
+                    borderColor: 'black'
+                },
+                {
+                    label: "Prof. Conn",
+                    data: [{% for i in range(connTime| length) %} 
+                    {x:"{{connTime[i]}}", y:{{connDiff[i]}}},
+                      {% endfor %}],
+                    fill: false,
+                    hidden: true,
+                    borderColor: 'pink'
+                },
+                {
+                    label: "Prof. Koyuturk",
+                    data: [{% for i in range(koyuTime| length) %} 
+                    {x:"{{koyuTime[i]}}", y:{{koyuDiff[i]}}},
+                      {% endfor %}],
+                    fill: false,
+                    hidden: true,
+                    borderColor: 'yellow'
+                },
+                {
+                    label: "Prof. Wang",
+                    data: [{% for i in range(wangTime| length) %} 
+                    {x:"{{wangTime[i]}}", y:{{wangDiff[i]}}},
+                      {% endfor %}],
+                    fill: false,
+                    hidden: true,
+                    borderColor: 'blue'
+                },                {
+                    label: "CWRU EECS Department Average",
+                    data: [{% for i in range(totalTime| length) %} 
+                    {x:"{{totalTime[i]}}", y:{{totalDiff[i]}}},
+                      {% endfor %}],
+                    fill: false,
+                    
+                    borderColor: 'pruple'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            title:      {
+                display: true,
+                text:    "CWRU EECS Department Rate My Professor Scores"
+            },
+            scales:     {
+                xAxes: [{
+                    type:       "time",
+                    time:       {
+                        format: timeFormat,
+                        tooltipFormat: 'll'
+                    },
+                    scaleLabel: {
+                        display:     true,
+                        labelString: 'Date'
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display:     true,
+                        labelString: 'value'
+                    }
+                }]
+            }
+        }
+    };
+
+    // window.onload = function () {
+    //     var ctx       = document.getElementById("canvas2").getContext("2d");
+    //     window.myLine = new Chart(ctx, config);
+    // };
+
+</script>
+
+
+                            </body>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </body>
+
+</html>
